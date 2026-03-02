@@ -3,6 +3,7 @@ import { AlertTriangle } from "lucide-react";
 import nasaLogo from "@/assets/nasa-logo.png";
 import sanseLogo from "@/assets/sanse-logo.png";
 import asturiasLogo from "@/assets/asturias-logo.png";
+import dockerlabsLogo from "@/assets/dockerlabs-logo.png";
 
 const vulns = [
   {
@@ -19,6 +20,11 @@ const vulns = [
     org: "Principado de Asturias",
     description: "Vulnerabilidad reportada de forma responsable en la infraestructura digital del Principado de Asturias.",
     logo: asturiasLogo,
+  },
+  {
+    org: "DockerLabs",
+    description: "Carta de reconocimiento por participación responsable en el programa VDP (Vulnerability Disclosure Program) de DockerLabs.",
+    logo: dockerlabsLogo,
   },
 ];
 
@@ -37,7 +43,7 @@ const VulnerabilitiesSection = () => {
           </h2>
           <div className="w-16 h-1 bg-primary rounded-full mb-8" />
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {vulns.map((vuln, i) => (
               <motion.div
                 key={vuln.org}
