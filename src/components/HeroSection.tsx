@@ -4,7 +4,7 @@ import profileImg from "@/assets/thomas-profile.png";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pt-20 sm:pt-0">
       {/* Background grid */}
       <div className="absolute inset-0 scanline pointer-events-none" />
       <div
@@ -15,7 +15,7 @@ const HeroSection = () => {
         }}
       />
 
-      <div className="container max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 relative z-10">
+      <div className="container max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-8 sm:gap-12 relative z-10">
         {/* Text */}
         <motion.div
           className="flex-1 text-center lg:text-left"
@@ -23,27 +23,27 @@ const HeroSection = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="flex items-center gap-2 justify-center lg:justify-start mb-4">
-            <Terminal className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-            <span className="font-mono text-xs sm:text-sm text-primary tracking-widest uppercase">
+          <div className="flex items-center gap-2 justify-center lg:justify-start mb-3 sm:mb-4">
+            <Terminal className="w-4 h-4 text-primary" />
+            <span className="font-mono text-xs text-primary tracking-widest uppercase">
               ~/portfolio
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-4">
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-3 sm:mb-4">
             Thomas
             <br />
             <span className="text-gradient-primary">O'Neil Álvarez</span>
           </h1>
 
-          <div className="flex items-center gap-2 justify-center lg:justify-start mb-6">
-            <Shield className="w-5 h-5 text-accent" />
-            <p className="text-lg sm:text-xl text-muted-foreground">
+          <div className="flex items-center gap-2 justify-center lg:justify-start mb-4 sm:mb-6">
+            <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+            <p className="text-base sm:text-xl text-muted-foreground">
               Ethical Hacker &amp; Pentester
             </p>
           </div>
 
-          <p className="text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-8 leading-relaxed">
             Pentester en{" "}
             <span className="text-primary font-semibold">SecureIT</span> ·
             Formador en IA y Ciberseguridad en{" "}
@@ -55,13 +55,13 @@ const HeroSection = () => {
           <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
             <a
               href="#about"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold transition-all hover:glow-primary"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm sm:text-base transition-all hover:glow-primary"
             >
               Sobre mí
             </a>
             <a
               href="#certifications"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border-glow bg-secondary text-secondary-foreground font-semibold transition-all hover:bg-secondary/80"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border-glow bg-secondary text-secondary-foreground font-semibold text-sm sm:text-base transition-all hover:bg-secondary/80"
             >
               Certificaciones
             </a>
@@ -80,7 +80,7 @@ const HeroSection = () => {
             <img
               src={profileImg}
               alt="Thomas O'Neil Álvarez"
-              className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full object-cover border-2 border-primary/40"
+              className="relative w-44 h-44 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full object-cover border-2 border-primary/40"
             />
           </div>
         </motion.div>
@@ -88,11 +88,11 @@ const HeroSection = () => {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2"
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
       >
-        <ChevronDown className="w-6 h-6 text-primary/50" />
+        <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-primary/50" />
       </motion.div>
     </section>
   );
