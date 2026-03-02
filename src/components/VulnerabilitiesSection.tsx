@@ -47,11 +47,11 @@ const VulnerabilitiesSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.15 }}
               >
-                <div className="w-20 h-20 rounded-xl bg-secondary flex items-center justify-center mb-5 overflow-hidden p-2">
+                <div className="w-28 h-28 rounded-2xl bg-white flex items-center justify-center mb-5 overflow-hidden p-4">
                   <img
                     src={vuln.logo}
                     alt={vuln.org}
-                    className="w-full h-full object-contain"
+                    className="max-w-full max-h-full object-contain"
                   />
                 </div>
                 <div className="flex items-center gap-2 mb-3">
