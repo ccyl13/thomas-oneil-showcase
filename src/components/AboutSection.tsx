@@ -26,18 +26,19 @@ const AboutSection = () => {
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
             <div className="space-y-4 sm:space-y-5 text-sm sm:text-base text-muted-foreground leading-relaxed">
               <p>
-                Soy <strong className="text-foreground">Thomas O'Neil Álvarez</strong>, Ethical
+              Soy <strong className="text-foreground">Thomas O'Neil Álvarez</strong>, Ethical
                 Hacker y Pentester en{" "}
-                <strong className="text-primary">SecureIT</strong>, donde me
-                especializo en pruebas de penetración y auditorías de seguridad
-                para proteger infraestructuras críticas.
+                <strong className="text-primary">SecureIT</strong>, donde realizo
+                auditorías WiFi, ejercicios de Red Team (intrusiones físicas),
+                ingeniería social, campañas de phishing, pentesting web y
+                auditorías de seguridad para proteger infraestructuras críticas.
               </p>
               <p>
                 Como formador en{" "}
                 <strong className="text-accent">Racks Academy</strong>, imparto
                 formación especializada en Inteligencia Artificial y
-                Ciberseguridad, ayudando a la próxima generación de
-                profesionales de seguridad.
+                Ciberseguridad, ayudando a profesionales que quieren dar el salto
+                a la ciberseguridad desde otras ramas, incluidos perfiles de IA.
               </p>
               <p>
                 Durante los últimos{" "}
