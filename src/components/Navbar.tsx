@@ -4,8 +4,10 @@ import { Terminal, Menu, X, Github, Linkedin } from "lucide-react";
 
 const links = [
   { label: "Sobre mí", href: "#about" },
-  { label: "Herramientas", href: "#tools" },
+  { label: "Proyectos", href: "#tools" },
+  { label: "Vulnerabilidades", href: "#vulnerabilities" },
   { label: "Certificaciones", href: "#certifications" },
+  { label: "Medios", href: "#media" },
 ];
 
 const Navbar = () => {
