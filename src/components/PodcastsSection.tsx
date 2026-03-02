@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Play, Headphones, ExternalLink } from "lucide-react";
+import { Play, Headphones, ExternalLink, Mic } from "lucide-react";
 
 const videos = [
   { id: "4MsDBR2wJtY", type: "video" },
@@ -9,15 +9,6 @@ const videos = [
   { id: "d_R4CK5rNy8", type: "short" },
   { id: "hZXC9L74mio", type: "short" },
   { id: "CchIsa11cA0", type: "video" },
-];
-
-const podcasts = [
-  {
-    title: "Podcast Oficial de Volvo España",
-    description: "Participación en el podcast oficial de Volvo España hablando sobre ciberseguridad.",
-    url: "https://open.spotify.com/episode/0NOd7sGfVK6S2oPFZMo7Kx",
-    platform: "Spotify",
-  },
 ];
 
 const PodcastsSection = () => {
@@ -34,6 +25,37 @@ const PodcastsSection = () => {
             <span className="text-gradient-accent">Apariciones en Medios</span>
           </h2>
           <div className="w-16 h-1 bg-accent rounded-full mb-8" />
+
+          {/* Volvo España highlight */}
+          <motion.a
+            href="https://open.spotify.com/episode/0NOd7sGfVK6S2oPFZMo7Kx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass rounded-2xl p-6 sm:p-8 group hover:border-[#1DB954]/50 hover:shadow-[0_0_30px_hsl(141_76%_48%/0.15)] transition-all block mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="flex items-start sm:items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-[#1DB954] flex items-center justify-center flex-shrink-0">
+                <Mic className="w-7 h-7 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">Podcast Oficial de Volvo España</h3>
+                  <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Entrevistado por <strong className="text-foreground">JuanMa Ortega</strong>, ganador de <strong className="text-primary">2 Premios Ondas</strong> y una <strong className="text-accent">Antena de Oro</strong>, hablando sobre ciberseguridad en el podcast oficial de Volvo España.
+                </p>
+                <span className="inline-flex items-center gap-1.5 text-xs text-[#1DB954] font-medium mt-2">
+                  <Headphones className="w-3.5 h-3.5" />
+                  Escuchar en Spotify
+                </span>
+              </div>
+            </div>
+          </motion.a>
 
           {/* Videos */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -69,39 +91,6 @@ const PodcastsSection = () => {
                   </div>
                 </a>
               </motion.div>
-            ))}
-          </div>
-
-          {/* Podcasts */}
-          <h3 className="text-2xl font-bold mt-12 mb-6 text-foreground">
-            <Headphones className="w-5 h-5 text-[#1DB954] inline-block mr-2 -mt-1" />
-            Podcasts
-          </h3>
-          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-            {podcasts.map((podcast, i) => (
-              <motion.a
-                key={podcast.title}
-                href={podcast.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass rounded-2xl p-5 sm:p-6 group hover:border-[#1DB954]/50 transition-all block"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-[#1DB954] flex items-center justify-center flex-shrink-0">
-                    <Headphones className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-foreground text-sm sm:text-base">{podcast.title}</h4>
-                    <span className="text-xs text-muted-foreground">{podcast.platform}</span>
-                  </div>
-                  <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{podcast.description}</p>
-              </motion.a>
             ))}
           </div>
         </motion.div>

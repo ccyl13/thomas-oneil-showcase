@@ -58,9 +58,10 @@ const VulnerabilitiesSection = () => {
             {vulns.map((vuln, i) => (
               <motion.div
                 key={vuln.org}
-                className="glass rounded-2xl p-5 sm:p-8 flex flex-col items-center text-center"
+                className="glass rounded-2xl p-5 sm:p-8 flex flex-col items-center text-center hover:border-primary/50 hover:shadow-[0_0_25px_hsl(175_80%_50%/0.15)] transition-all duration-300 cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -6, scale: 1.02 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
