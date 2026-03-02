@@ -35,7 +35,8 @@ const PodcastsSection = () => {
           </h2>
           <div className="w-16 h-1 bg-accent rounded-full mb-8" />
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Videos */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {videos.map((video, i) => (
               <motion.div
                 key={video.id}
@@ -62,8 +63,13 @@ const PodcastsSection = () => {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-background/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center">
-                      <Play className="w-6 h-6 text-primary-foreground ml-0.5" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/90 flex items-center justify-center">
+                      <Play className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground ml-0.5" />
+                    </div>
+                  </div>
+                </a>
+              </motion.div>
+            ))}
           </div>
 
           {/* Podcasts */}
@@ -71,14 +77,14 @@ const PodcastsSection = () => {
             <Headphones className="w-5 h-5 text-[#1DB954] inline-block mr-2 -mt-1" />
             Podcasts
           </h3>
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
             {podcasts.map((podcast, i) => (
               <motion.a
                 key={podcast.title}
                 href={podcast.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glass rounded-2xl p-6 group hover:border-[#1DB954]/50 transition-all block"
+                className="glass rounded-2xl p-5 sm:p-6 group hover:border-[#1DB954]/50 transition-all block"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -88,19 +94,14 @@ const PodcastsSection = () => {
                   <div className="w-10 h-10 rounded-full bg-[#1DB954] flex items-center justify-center flex-shrink-0">
                     <Headphones className="w-5 h-5 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-foreground">{podcast.title}</h4>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-foreground text-sm sm:text-base">{podcast.title}</h4>
                     <span className="text-xs text-muted-foreground">{podcast.platform}</span>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{podcast.description}</p>
               </motion.a>
-            ))}
-          </div>
-                  </div>
-                </a>
-              </motion.div>
             ))}
           </div>
         </motion.div>

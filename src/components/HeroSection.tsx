@@ -24,8 +24,8 @@ const HeroSection = () => {
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center gap-2 justify-center lg:justify-start mb-4">
-            <Terminal className="w-5 h-5 text-primary" />
-            <span className="font-mono text-sm text-primary tracking-widest uppercase">
+            <Terminal className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+            <span className="font-mono text-xs sm:text-sm text-primary tracking-widest uppercase">
               ~/portfolio
             </span>
           </div>

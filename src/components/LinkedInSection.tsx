@@ -32,20 +32,20 @@ const LinkedInSection = () => {
           <div className="w-16 h-1 bg-primary rounded-full mb-8" />
 
           {/* Stats grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className="glass rounded-2xl p-6 flex flex-col items-center text-center"
+                className="glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
-                <stat.icon className="w-6 h-6 text-primary mb-3" />
-                <span className="text-3xl font-bold text-foreground">{stat.value}</span>
-                <span className="text-sm font-semibold text-foreground mt-1">{stat.label}</span>
-                <span className="text-xs text-muted-foreground mt-0.5">{stat.sub}</span>
+                <stat.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary mb-2 sm:mb-3" />
+                <span className="text-2xl sm:text-3xl font-bold text-foreground">{stat.value}</span>
+                <span className="text-xs sm:text-sm font-semibold text-foreground mt-1">{stat.label}</span>
+                <span className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{stat.sub}</span>
               </motion.div>
             ))}
           </div>
