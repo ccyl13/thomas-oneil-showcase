@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { AlertTriangle } from "lucide-react";
 import nasaLogo from "@/assets/nasa-logo.png";
 import sanseLogo from "@/assets/sanse-logo.png";
-import asturiasLogo from "@/assets/asturias-logo.svg";
+import asturiasLogo from "@/assets/asturias-logo.png";
 
 const vulns = [
   {
