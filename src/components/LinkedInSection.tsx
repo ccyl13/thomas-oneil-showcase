@@ -18,7 +18,7 @@ const barData = [
 
 const LinkedInSection = () => {
   return (
-    <section id="linkedin" className="py-24 px-4">
+    <section id="linkedin" className="py-16 sm:py-24 px-4">
       <div className="container max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -26,52 +26,53 @@ const LinkedInSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-2">
+          <h2 className="text-2xl sm:text-4xl font-bold mb-2">
             <span className="text-gradient-primary">Impacto en LinkedIn</span>
           </h2>
-          <div className="w-16 h-1 bg-primary rounded-full mb-8" />
+          <div className="w-16 h-1 bg-primary rounded-full mb-6 sm:mb-8" />
 
           {/* Stats grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className="glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center"
+                className="glass rounded-xl sm:rounded-2xl p-3 sm:p-6 flex flex-col items-center text-center hover:border-primary/50 transition-all duration-300"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -4 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
-                <stat.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary mb-2 sm:mb-3" />
-                <span className="text-2xl sm:text-3xl font-bold text-foreground">{stat.value}</span>
-                <span className="text-xs sm:text-sm font-semibold text-foreground mt-1">{stat.label}</span>
-                <span className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{stat.sub}</span>
+                <stat.icon className="w-4 h-4 sm:w-6 sm:h-6 text-primary mb-1.5 sm:mb-3" />
+                <span className="text-xl sm:text-3xl font-bold text-foreground">{stat.value}</span>
+                <span className="text-[10px] sm:text-sm font-semibold text-foreground mt-0.5 sm:mt-1">{stat.label}</span>
+                <span className="text-[9px] sm:text-xs text-muted-foreground mt-0.5">{stat.sub}</span>
               </motion.div>
             ))}
           </div>
 
           {/* Visual chart */}
           <motion.div
-            className="glass rounded-2xl p-6 sm:p-8"
+            className="glass rounded-xl sm:rounded-2xl p-4 sm:p-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <div className="flex items-center gap-3 mb-6">
-              <Linkedin className="w-5 h-5 text-[#0A66C2]" />
+            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+              <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-[#0A66C2]" />
               <div>
-                <h3 className="text-lg font-bold text-foreground">Rendimiento del contenido</h3>
-                <p className="text-sm text-muted-foreground">6.314.354 impresiones totales</p>
+                <h3 className="text-sm sm:text-lg font-bold text-foreground">Rendimiento del contenido</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">6.314.354 impresiones totales</p>
               </div>
             </div>
 
-            {/* Bar chart visualization */}
-            <div className="flex items-end gap-1 h-32 sm:h-40">
+            {/* Bar chart */}
+            <div className="flex items-end gap-[2px] sm:gap-1 h-24 sm:h-40">
               {barData.map((bar, i) => (
                 <motion.div
                   key={i}
-                  className="flex-1 bg-primary/70 rounded-t-sm hover:bg-primary transition-colors min-w-0"
+                  className="flex-1 bg-primary/70 rounded-t-[1px] sm:rounded-t-sm hover:bg-primary transition-colors min-w-0"
                   initial={{ height: 0 }}
                   whileInView={{ height: `${bar.h}%` }}
                   viewport={{ once: true }}
@@ -80,7 +81,7 @@ const LinkedInSection = () => {
               ))}
             </div>
 
-            <p className="text-xs text-muted-foreground mt-4 text-center">
+            <p className="text-[10px] sm:text-xs text-muted-foreground mt-3 sm:mt-4 text-center">
               Evolución de impresiones · <span className="text-primary font-semibold">The OSINT Sorcerer</span>
             </p>
           </motion.div>
