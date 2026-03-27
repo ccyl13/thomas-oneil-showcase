@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
 import { ExternalLink, ShieldCheck } from "lucide-react";
+import TextReveal from "./animations/TextReveal";
+import LineReveal from "./animations/LineReveal";
+import StaggerContainer, { staggerItemVariants } from "./animations/StaggerContainer";
+import MagneticCard from "./animations/MagneticCard";
 import ewptxBadge from "@/assets/ewptx-badge.png";
 import ecpptBadge from "@/assets/ecppt-badge.png";
 import fortinetFcaBadge from "@/assets/fortinet-fca-badge.png";
@@ -41,32 +45,21 @@ const CertificationsSection = () => {
   return (
     <section id="certifications" className="py-16 sm:py-24 px-4">
       <div className="container max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-2xl sm:text-4xl font-bold mb-2">
-            <span className="text-gradient-accent">Certificaciones</span>
-          </h2>
-          <div className="w-16 h-1 bg-accent rounded-full mb-6 sm:mb-8" />
+        <TextReveal as="h2" className="text-2xl sm:text-4xl font-bold mb-2 text-gradient-accent inline-block">
+          Certificaciones
+        </TextReveal>
+        <LineReveal color="bg-accent" />
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
-            {certs.map((cert, i) => (
+        <StaggerContainer className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 mt-6 sm:mt-8">
+          {certs.map((cert) => (
+            <MagneticCard key={cert.name} intensity={5}>
               <motion.a
-                key={cert.name}
                 href={cert.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glass rounded-xl sm:rounded-2xl p-3 sm:p-5 group hover:border-primary/50 hover:shadow-[0_0_25px_hsl(175_80%_50%/0.15)] transition-all duration-300 block"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -4 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
+                className="glass rounded-xl sm:rounded-2xl p-3 sm:p-5 group hover:border-primary/50 hover:shadow-[0_0_25px_hsl(175_80%_50%/0.15)] transition-all duration-300 block h-full"
+                variants={staggerItemVariants}
               >
-                {/* Mobile: stacked layout */}
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2.5 sm:gap-4">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl bg-white/90 p-1.5 sm:p-2 flex items-center justify-center flex-shrink-0">
                     <img
@@ -97,9 +90,9 @@ const CertificationsSection = () => {
                   {cert.description}
                 </p>
               </motion.a>
-            ))}
-          </div>
-        </motion.div>
+            </MagneticCard>
+          ))}
+        </StaggerContainer>
       </div>
     </section>
   );

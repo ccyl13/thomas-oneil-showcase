@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Shield, Menu, X, Github, Linkedin } from "lucide-react";
 
 const links = [
@@ -13,9 +13,20 @@ const links = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    setHidden(latest > prev && latest > 150);
+  });
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass">
+    <motion.nav
+      className="fixed top-0 left-0 right-0 z-50 glass"
+      animate={{ y: hidden ? -80 : 0 }}
+      transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
       <div className="container max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center gap-2">
           <Shield className="w-5 h-5 text-primary" />
@@ -30,7 +41,7 @@ const Navbar = () => {
             <a
               key={l.label}
               href={l.href}
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              className="relative text-sm text-muted-foreground hover:text-primary transition-colors after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:scale-x-0 after:origin-right hover:after:scale-x-100 hover:after:origin-left after:transition-transform after:duration-300"
             >
               {l.label}
             </a>
@@ -73,16 +84,20 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            {links.map((l) => (
-              <a
+            {links.map((l, i) => (
+              <motion.a
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
                 className="block text-sm text-muted-foreground hover:text-primary transition-colors py-1"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
               >
                 {l.label}
-              </a>
+              </motion.a>
             ))}
             <div className="flex items-center gap-4 pt-2 border-t border-border">
               <a
@@ -105,7 +120,7 @@ const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   );
 };
 
