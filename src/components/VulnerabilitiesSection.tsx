@@ -1,4 +1,8 @@
 import { motion } from "framer-motion";
+import TextReveal from "./animations/TextReveal";
+import LineReveal from "./animations/LineReveal";
+import StaggerContainer, { staggerItemVariants } from "./animations/StaggerContainer";
+import MagneticCard from "./animations/MagneticCard";
 import nasaLogo from "@/assets/nasa-logo.png";
 import sanseLogo from "@/assets/sanse-logo.png";
 import asturiasLogo from "@/assets/asturias-logo.png";
@@ -19,27 +23,17 @@ const VulnerabilitiesSection = () => {
   return (
     <section id="vulnerabilities" className="py-16 sm:py-24 px-4">
       <div className="container max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-2xl sm:text-4xl font-bold mb-2">
-            <span className="text-gradient-primary">Vulnerabilidades Reportadas</span>
-          </h2>
-          <div className="w-16 h-1 bg-primary rounded-full mb-6 sm:mb-8" />
+        <TextReveal as="h2" className="text-2xl sm:text-4xl font-bold mb-2 text-gradient-primary inline-block">
+          Vulnerabilidades Reportadas
+        </TextReveal>
+        <LineReveal />
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
-            {vulns.map((vuln, i) => (
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mt-6 sm:mt-8">
+          {vulns.map((vuln) => (
+            <MagneticCard key={vuln.org} intensity={6}>
               <motion.div
-                key={vuln.org}
-                className="glass rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center hover:border-primary/50 hover:shadow-[0_0_25px_hsl(175_80%_50%/0.15)] transition-all duration-300 cursor-default"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -6, scale: 1.02 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="glass rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center hover:border-primary/50 hover:shadow-[0_0_25px_hsl(175_80%_50%/0.15)] transition-all duration-300 cursor-default h-full"
+                variants={staggerItemVariants}
               >
                 <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl bg-white flex items-center justify-center mb-3 sm:mb-4 overflow-hidden p-2.5 sm:p-4">
                   <img
@@ -53,9 +47,9 @@ const VulnerabilitiesSection = () => {
                   {vuln.description}
                 </p>
               </motion.div>
-            ))}
-          </div>
-        </motion.div>
+            </MagneticCard>
+          ))}
+        </StaggerContainer>
       </div>
     </section>
   );

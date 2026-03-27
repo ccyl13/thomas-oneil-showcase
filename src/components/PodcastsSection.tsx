@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
 import { Play, Headphones, ExternalLink, Mic } from "lucide-react";
+import TextReveal from "./animations/TextReveal";
+import LineReveal from "./animations/LineReveal";
+import SectionReveal from "./animations/SectionReveal";
+import StaggerContainer, { staggerItemVariants } from "./animations/StaggerContainer";
 
 const videos = [
   { id: "4MsDBR2wJtY", type: "video" },
@@ -15,28 +19,18 @@ const PodcastsSection = () => {
   return (
     <section id="media" className="py-16 sm:py-24 px-4">
       <div className="container max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-2xl sm:text-4xl font-bold mb-2">
-            <span className="text-gradient-accent">Apariciones en Medios</span>
-          </h2>
-          <div className="w-16 h-1 bg-accent rounded-full mb-6 sm:mb-8" />
+        <TextReveal as="h2" className="text-2xl sm:text-4xl font-bold mb-2 text-gradient-accent inline-block">
+          Apariciones en Medios
+        </TextReveal>
+        <LineReveal color="bg-accent" />
 
-          {/* Volvo España highlight */}
-          <motion.a
+        {/* Volvo España highlight */}
+        <SectionReveal className="mt-6 sm:mt-8 mb-6 sm:mb-8" delay={0.15}>
+          <a
             href="https://open.spotify.com/episode/0NOd7sGfVK6S2oPFZMo7Kx"
             target="_blank"
             rel="noopener noreferrer"
-            className="glass rounded-xl sm:rounded-2xl p-4 sm:p-8 group hover:border-[#1DB954]/50 hover:shadow-[0_0_30px_hsl(141_76%_48%/0.15)] transition-all duration-300 block mb-6 sm:mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -4 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
+            className="glass rounded-xl sm:rounded-2xl p-4 sm:p-8 group hover:border-[#1DB954]/50 hover:shadow-[0_0_30px_hsl(141_76%_48%/0.15)] transition-all duration-300 block"
           >
             <div className="flex items-start gap-3 sm:gap-4">
               <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-[#1DB954] flex items-center justify-center flex-shrink-0">
@@ -56,45 +50,42 @@ const PodcastsSection = () => {
                 </span>
               </div>
             </div>
-          </motion.a>
+          </a>
+        </SectionReveal>
 
-          {/* Videos */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-            {videos.map((video, i) => (
-              <motion.div
-                key={video.id}
-                className="glass rounded-xl sm:rounded-2xl overflow-hidden group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
+        {/* Videos */}
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          {videos.map((video) => (
+            <motion.div
+              key={video.id}
+              className="glass rounded-xl sm:rounded-2xl overflow-hidden group"
+              variants={staggerItemVariants}
+            >
+              <a
+                href={
+                  video.type === "short"
+                    ? `https://youtube.com/shorts/${video.id}`
+                    : `https://youtu.be/${video.id}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative block aspect-video"
               >
-                <a
-                  href={
-                    video.type === "short"
-                      ? `https://youtube.com/shorts/${video.id}`
-                      : `https://youtu.be/${video.id}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative block aspect-video"
-                >
-                  <img
-                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-                    alt="Video thumbnail"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-background/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary/90 flex items-center justify-center">
-                      <Play className="w-4 h-4 sm:w-6 sm:h-6 text-primary-foreground ml-0.5" />
-                    </div>
+                <img
+                  src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
+                  alt="Video thumbnail"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-background/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary/90 flex items-center justify-center">
+                    <Play className="w-4 h-4 sm:w-6 sm:h-6 text-primary-foreground ml-0.5" />
                   </div>
-                </a>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+                </div>
+              </a>
+            </motion.div>
+          ))}
+        </StaggerContainer>
       </div>
     </section>
   );
