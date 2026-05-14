@@ -131,3 +131,64 @@
   background: hsl(175 80% 50% / 0.3);
   color: hsl(180 10% 90%);
 }
+
+/* ── 3D & modern utilities ── */
+.profile-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-slow-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+.animate-spin-slow-reverse {
+  animation: spin-slow-reverse 18s linear infinite;
+}
+
+/* 3D card depth shimmer */
+@keyframes shimmer-3d {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.card-shine {
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(0, 217, 192, 0.04) 50%,
+    transparent 60%
+  );
+  background-size: 200% auto;
+  animation: shimmer-3d 4s linear infinite;
+}
+
+/* Noise texture overlay */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px;
+  opacity: 0.4;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Glowing border animation */
+@keyframes border-glow-pulse {
+  0%, 100% { border-color: hsl(175 80% 50% / 0.2); }
+  50% { border-color: hsl(175 80% 50% / 0.5); box-shadow: 0 0 20px hsl(175 80% 50% / 0.15); }
+}
+
+.border-pulse {
+  animation: border-glow-pulse 3s ease-in-out infinite;
+}

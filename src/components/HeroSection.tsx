@@ -1,8 +1,10 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Shield, Terminal, ChevronDown } from "lucide-react";
-import { useRef } from "react";
+import { Shield, Terminal, ChevronDown, Lock, Wifi } from "lucide-react";
+import { useRef, lazy, Suspense } from "react";
 import profileImg from "@/assets/thomas-profile.png";
 import TextReveal from "./animations/TextReveal";
+
+const HeroCanvas = lazy(() => import("./3d/HeroCanvas"));
 
 const HeroSection = () => {
   const ref = useRef<HTMLElement>(null);
@@ -18,14 +20,21 @@ const HeroSection = () => {
       ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pt-20 sm:pt-0"
     >
-      {/* Parallax background */}
-      <motion.div className="absolute inset-0 scanline pointer-events-none" style={{ y: bgY }} />
+      {/* Three.js 3D background */}
+      <Suspense fallback={null}>
+        <HeroCanvas />
+      </Suspense>
+
+      {/* Scanline overlay */}
+      <motion.div className="absolute inset-0 scanline pointer-events-none z-[1]" style={{ y: bgY }} />
+
+      {/* Radial glow */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-[1]"
         style={{
           y: bgY,
           background:
-            "radial-gradient(circle at 50% 50%, hsl(175 80% 50% / 0.05) 0%, transparent 60%)",
+            "radial-gradient(ellipse 80% 60% at 50% 50%, hsl(175 80% 50% / 0.07) 0%, transparent 70%)",
         }}
       />
 
@@ -81,11 +90,36 @@ const HeroSection = () => {
             <span className="text-accent font-semibold">RootedCON 2026</span>
           </motion.p>
 
+          {/* Floating badges */}
+          <motion.div
+            className="flex flex-wrap gap-2 justify-center lg:justify-start mb-6 sm:mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.1 }}
+          >
+            {[
+              { icon: Lock, label: "Red Team" },
+              { icon: Wifi, label: "WiFi Auditing" },
+              { icon: Shield, label: "Web Pentesting" },
+            ].map(({ icon: Icon, label }, i) => (
+              <motion.span
+                key={label}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.2 + i * 0.1 }}
+              >
+                <Icon className="w-3 h-3" />
+                {label}
+              </motion.span>
+            ))}
+          </motion.div>
+
           <motion.div
             className="flex flex-wrap gap-3 justify-center lg:justify-start"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.2 }}
+            transition={{ duration: 0.6, delay: 1.4 }}
           >
             <a
               href="#about"
@@ -102,19 +136,34 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* Photo */}
+        {/* Photo with 3D effect */}
         <motion.div
           className="flex-shrink-0"
           initial={{ opacity: 0, scale: 0.85, filter: "blur(10px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 1, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <div className="relative">
-            <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary/40 to-accent/40 blur-xl animate-pulse-glow" />
+          <div className="relative profile-3d">
+            {/* Outer ring */}
+            <div className="absolute -inset-3 rounded-full bg-gradient-to-br from-primary/30 via-transparent to-accent/30 blur-lg animate-pulse-glow" />
+            {/* Rotating ring */}
+            <div className="absolute -inset-1 rounded-full border border-primary/20 animate-spin-slow" />
+            <div className="absolute -inset-2 rounded-full border border-accent/10 animate-spin-slow-reverse" />
             <img
               src={profileImg}
               alt="Thomas O'Neil Álvarez"
-              className="relative w-44 h-44 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full object-cover border-2 border-primary/40"
+              className="relative w-44 h-44 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full object-cover border-2 border-primary/40 shadow-[0_0_60px_hsl(175_80%_50%/0.2)]"
+            />
+            {/* Hexagon decorations */}
+            <motion.div
+              className="absolute -top-4 -right-4 w-8 h-8 border border-accent/40 rotate-45"
+              animate={{ rotate: [45, 90, 45], scale: [1, 1.1, 1] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute -bottom-4 -left-4 w-6 h-6 border border-primary/40 rotate-12"
+              animate={{ rotate: [12, 60, 12], scale: [1, 1.15, 1] }}
+              transition={{ duration: 5, repeat: Infinity }}
             />
           </div>
         </motion.div>
@@ -122,7 +171,7 @@ const HeroSection = () => {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, y: [0, 10, 0] }}
         transition={{ opacity: { delay: 1.5 }, y: { repeat: Infinity, duration: 2 } }}
