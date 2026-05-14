@@ -9,11 +9,13 @@ import asturiasLogo from "@/assets/asturias-logo.png";
 import dockerlabsLogo from "@/assets/dockerlabs-logo.png";
 import dailymotionLogo from "@/assets/dailymotion-logo.png";
 import contentsquareLogo from "@/assets/contentsquare-logo.png";
+import barcelonaLogo from "@/assets/barcelona-logo.svg";
 
 const vulns = [
   { org: "NASA", description: "Carta de reconocimiento por la identificación responsable de una vulnerabilidad en la infraestructura de la NASA.", logo: nasaLogo },
   { org: "Dailymotion", description: "Vulnerabilidad reportada de forma responsable en la plataforma de vídeo Dailymotion.", logo: dailymotionLogo },
   { org: "Contentsquare", description: "Vulnerabilidad reportada de forma responsable en la plataforma de análisis digital Contentsquare.", logo: contentsquareLogo },
+  { org: "Ayto. Barcelona", description: "Vulnerabilidad reportada de forma responsable en la infraestructura digital del Ayuntamiento de Barcelona.", logo: barcelonaLogo },
   { org: "Ayto. San Sebastián de los Reyes", description: "Vulnerabilidad reportada de forma responsable en la infraestructura del Ayuntamiento de San Sebastián de los Reyes.", logo: sanseLogo },
   { org: "Principado de Asturias", description: "Vulnerabilidad reportada de forma responsable en la infraestructura digital del Principado de Asturias.", logo: asturiasLogo },
   { org: "DockerLabs", description: "Carta de reconocimiento por participación responsable en el programa VDP (Vulnerability Disclosure Program) de DockerLabs.", logo: dockerlabsLogo },
@@ -28,7 +30,7 @@ const VulnerabilitiesSection = () => {
         </TextReveal>
         <LineReveal />
 
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mt-6 sm:mt-8">
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mt-6 sm:mt-8">
           {vulns.map((vuln) => (
             <MagneticCard key={vuln.org} intensity={6}>
               <motion.div
