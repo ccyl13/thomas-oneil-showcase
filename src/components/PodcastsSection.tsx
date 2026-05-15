@@ -15,7 +15,6 @@ const videos = [
   { id: "CchIsa11cA0", type: "video" },
 ];
 
-// Romuald Fons podcast — embed with specific start time to show a frame with Thomas visible
 const ROMUALD_VIDEO_ID = "YTiNopIKiW4";
 const ROMUALD_START_SECONDS = 45;
 
@@ -27,8 +26,6 @@ const PodcastsSection = () => {
           Apariciones en Medios
         </TextReveal>
         <LineReveal color="bg-accent" />
-
-        {/* Romuald Fons highlight — embedded player starting at frame with Thomas */}
         <SectionReveal className="mt-6 sm:mt-8 mb-6 sm:mb-8" delay={0.1}>
           <div className="glass rounded-xl sm:rounded-2xl overflow-hidden group hover:border-primary/50 hover:shadow-[0_0_30px_hsl(175_80%_50%/0.15)] transition-all duration-300">
             <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
@@ -48,31 +45,19 @@ const PodcastsSection = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <h3 className="text-sm sm:text-lg font-bold text-foreground">Podcast con Romuald Fons</h3>
-                  <a
-                    href={`https://youtu.be/${ROMUALD_VIDEO_ID}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="opacity-60 hover:opacity-100 transition-opacity"
-                  >
+                  <a href={`https://youtu.be/${ROMUALD_VIDEO_ID}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
                     <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
                   </a>
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Entrevistado por <strong className="text-foreground">Romuald Fons</strong>, uno de los referentes de SEO y marketing digital en habla hispana, hablando sobre ciberseguridad, hacking ético y marca personal en LinkedIn.
+                  Entrevistado por <strong className="text-foreground">Romuald Fons</strong>, referente de SEO y marketing digital, hablando sobre ciberseguridad, hacking ético y marca personal en LinkedIn.
                 </p>
               </div>
             </div>
           </div>
         </SectionReveal>
-
-        {/* Volvo España highlight */}
         <SectionReveal className="mb-6 sm:mb-8" delay={0.15}>
-          <a
-            href="https://open.spotify.com/episode/0NOd7sGfVK6S2oPFZMo7Kx"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass rounded-xl sm:rounded-2xl p-4 sm:p-8 group hover:border-[#1DB954]/50 hover:shadow-[0_0_30px_hsl(141_76%_48%/0.15)] transition-all duration-300 block"
-          >
+          <a href="https://open.spotify.com/episode/0NOd7sGfVK6S2oPFZMo7Kx" target="_blank" rel="noopener noreferrer" className="glass rounded-xl sm:rounded-2xl p-4 sm:p-8 group hover:border-[#1DB954]/50 hover:shadow-[0_0_30px_hsl(141_76%_48%/0.15)] transition-all duration-300 block">
             <div className="flex items-start gap-3 sm:gap-4">
               <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-[#1DB954] flex items-center justify-center flex-shrink-0">
                 <Mic className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
@@ -93,30 +78,11 @@ const PodcastsSection = () => {
             </div>
           </a>
         </SectionReveal>
-
-        {/* Videos */}
         <StaggerContainer className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {videos.map((video) => (
-            <motion.div
-              key={video.id}
-              className="glass rounded-xl sm:rounded-2xl overflow-hidden group"
-              variants={staggerItemVariants}
-            >
-              <a
-                href={
-feat: add Romuald Fons podcast embed with frame preview                    ? `https://youtube.com/shorts/${video.id}`
-                    : `https://youtu.be/${video.id}`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative block aspect-video"
-              >
-                <img
-                  src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-                  alt="Video thumbnail"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                />
+            <motion.div key={video.id} className="glass rounded-xl sm:rounded-2xl overflow-hidden group" variants={staggerItemVariants}>
+              <a href={video.type === "short" ? `https://youtube.com/shorts/${video.id}` : `https://youtu.be/${video.id}`} target="_blank" rel="noopener noreferrer" className="relative block aspect-video">
+                <img src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} alt="Video thumbnail" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 <div className="absolute inset-0 bg-background/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary/90 flex items-center justify-center">
                     <Play className="w-4 h-4 sm:w-6 sm:h-6 text-primary-foreground ml-0.5" />
