@@ -16,6 +16,7 @@ const videos = [
 ];
 
 const ROMUALD_VIDEO_ID = "YTiNopIKiW4";
+const ROMUALD_THUMB = "https://github.com/ccyl13/thomas-oneil-showcase/blob/main/FOTO1234.png?raw=true";
 
 const PodcastsSection = () => {
   return (
@@ -55,24 +56,32 @@ const PodcastsSection = () => {
           </a>
         </SectionReveal>
 
-        {/* Video grid — Romuald included as first item */}
+        {/* Video grid */}
         <StaggerContainer className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
 
-          {/* Romuald Fons — same size as others, iframe replaces thumbnail */}
+          {/* Romuald Fons — custom thumbnail */}
           <motion.div
             className="glass rounded-xl sm:rounded-2xl overflow-hidden group"
             variants={staggerItemVariants}
           >
-            <div className="relative aspect-video">
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${ROMUALD_VIDEO_ID}?start=45&rel=0&modestbranding=1`}
-                title="Podcast con Romuald Fons"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+            <a
+              href={`https://youtu.be/${ROMUALD_VIDEO_ID}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative block aspect-video"
+            >
+              <img
+                src={ROMUALD_THUMB}
+                alt="Podcast con Romuald Fons"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
               />
-            </div>
+              <div className="absolute inset-0 bg-background/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary/90 flex items-center justify-center">
+                  <Play className="w-4 h-4 sm:w-6 sm:h-6 text-primary-foreground ml-0.5" />
+                </div>
+              </div>
+            </a>
           </motion.div>
 
           {/* Rest of videos */}
