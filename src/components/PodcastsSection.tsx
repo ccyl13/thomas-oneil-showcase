@@ -15,6 +15,10 @@ const videos = [
   { id: "CchIsa11cA0", type: "video" },
 ];
 
+// Romuald Fons podcast — embed with specific start time to show a frame with Thomas visible
+const ROMUALD_VIDEO_ID = "YTiNopIKiW4";
+const ROMUALD_START_SECONDS = 45;
+
 const PodcastsSection = () => {
   return (
     <section id="media" className="py-16 sm:py-24 px-4">
@@ -24,8 +28,45 @@ const PodcastsSection = () => {
         </TextReveal>
         <LineReveal color="bg-accent" />
 
+        {/* Romuald Fons highlight — embedded player starting at frame with Thomas */}
+        <SectionReveal className="mt-6 sm:mt-8 mb-6 sm:mb-8" delay={0.1}>
+          <div className="glass rounded-xl sm:rounded-2xl overflow-hidden group hover:border-primary/50 hover:shadow-[0_0_30px_hsl(175_80%_50%/0.15)] transition-all duration-300">
+            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src={`https://www.youtube.com/embed/${ROMUALD_VIDEO_ID}?start=${ROMUALD_START_SECONDS}&rel=0&modestbranding=1`}
+                title="Podcast con Romuald Fons"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+            <div className="p-4 sm:p-6 flex items-start gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Mic className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-sm sm:text-lg font-bold text-foreground">Podcast con Romuald Fons</h3>
+                  <a
+                    href={`https://youtu.be/${ROMUALD_VIDEO_ID}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="opacity-60 hover:opacity-100 transition-opacity"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
+                  </a>
+                </div>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Entrevistado por <strong className="text-foreground">Romuald Fons</strong>, uno de los referentes de SEO y marketing digital en habla hispana, hablando sobre ciberseguridad, hacking ético y marca personal en LinkedIn.
+                </p>
+              </div>
+            </div>
+          </div>
+        </SectionReveal>
+
         {/* Volvo España highlight */}
-        <SectionReveal className="mt-6 sm:mt-8 mb-6 sm:mb-8" delay={0.15}>
+        <SectionReveal className="mb-6 sm:mb-8" delay={0.15}>
           <a
             href="https://open.spotify.com/episode/0NOd7sGfVK6S2oPFZMo7Kx"
             target="_blank"
@@ -63,8 +104,7 @@ const PodcastsSection = () => {
             >
               <a
                 href={
-                  video.type === "short"
-                    ? `https://youtube.com/shorts/${video.id}`
+feat: add Romuald Fons podcast embed with frame preview                    ? `https://youtube.com/shorts/${video.id}`
                     : `https://youtu.be/${video.id}`
                 }
                 target="_blank"
