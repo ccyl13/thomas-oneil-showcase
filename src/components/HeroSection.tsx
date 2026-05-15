@@ -1,18 +1,16 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Shield, Terminal, Lock, Wifi, ChevronDown } from "lucide-react";
-import { useRef, useEffect, useState, lazy, Suspense } from "react";
+import { useRef, useEffect, useState } from "react";
 import profileImg from "@/assets/thomas-profile.png";
 import TextReveal from "./animations/TextReveal";
 
-const HeroCanvas = lazy(() => import("./3d/HeroCanvas"));
-
 const HeroSection = () => {
   const ref = useRef<HTMLElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-
   const rawScale = useTransform(scrollYProgress, [0, 0.6], [1, 1.18]);
   const scale = useSpring(rawScale, { stiffness: 50, damping: 18 });
   const rawOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
@@ -31,6 +29,49 @@ const HeroSection = () => {
     return () => window.removeEventListener("mousemove", h);
   }, []);
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+    const pts = Array.from({ length: 120 }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.2 + 0.3, a: Math.random() * 0.5 + 0.1,
+      ph: Math.random() * Math.PI * 2,
+    }));
+    let t = 0; let raf: number;
+    const draw = () => {
+      t += 0.008;
+      ctx.clearRect(0, 0, W, H);
+      const bg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H)*0.8);
+      bg.addColorStop(0, "#071519"); bg.addColorStop(0.5, "#040d10"); bg.addColorStop(1, "#020c0f");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+      const gl = ctx.createRadialGradient(W*0.5, H*0.52, 0, W*0.5, H*0.52, W*0.4);
+      gl.addColorStop(0, "rgba(0,255,200,0.06)"); gl.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
+      const gs = 60, ox = (t * 3) % gs, oy = (t * 2) % gs;
+      ctx.strokeStyle = "rgba(0,255,200,0.025)"; ctx.lineWidth = 0.4;
+      for (let x = -gs; x < W+gs; x+=gs) { ctx.beginPath(); ctx.moveTo(x+ox,0); ctx.lineTo(x+ox,H); ctx.stroke(); }
+      for (let y = -gs; y < H+gs; y+=gs) { ctx.beginPath(); ctx.moveTo(0,y+oy); ctx.lineTo(W,y+oy); ctx.stroke(); }
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.ph += 0.015;
+        if (p.x<0) p.x=W; if (p.x>W) p.x=0;
+        if (p.y<0) p.y=H; if (p.y>H) p.y=0;
+        const f = 0.55 + 0.45 * Math.sin(p.ph + t);
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(180,255,235,${p.a*f})`; ctx.fill();
+      });
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    const onResize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+    window.addEventListener("resize", onResize);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", onResize); };
+  }, []);
+
   const badges = [
     { icon: Lock, label: "Red Team" },
     { icon: Wifi, label: "WiFi Auditing" },
@@ -41,13 +82,12 @@ const HeroSection = () => {
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <motion.div className="absolute inset-0 z-0" style={{ y: bgY }}>
-        <Suspense fallback={null}><HeroCanvas /></Suspense>
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       </motion.div>
-      <motion.div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: `radial-gradient(ellipse 70% 55% at ${50 + mouseX * 8}% ${50 + mouseY * 6}%, hsl(175 80% 50% / 0.09) 0%, transparent 70%)` }} />
+      <motion.div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: `radial-gradient(ellipse 70% 55% at ${50+mouseX*8}% ${50+mouseY*6}%, hsl(175 80% 50% / 0.09) 0%, transparent 70%)` }} />
       <motion.div className="absolute inset-0 pointer-events-none z-[2]" style={{ y: midY }}>
         <div className="absolute inset-0 scanline opacity-35" />
       </motion.div>
-      <motion.div className="absolute pointer-events-none z-[3] top-1/4 right-1/4 w-72 h-72 rounded-full" style={{ background: "radial-gradient(circle, hsl(175 80% 50% / 0.07) 0%, transparent 70%)", filter: "blur(48px)", x: mouseX * -22, y: mouseY * -16 }} />
       <motion.div className="relative z-10 w-full max-w-6xl mx-auto px-4 pt-20 sm:pt-0 flex flex-col-reverse lg:flex-row items-center gap-8 sm:gap-12" style={{ opacity }}>
         <motion.div className="flex-1 text-center lg:text-left" style={{ x: mouseX * -5, y: mouseY * -3 }}>
           <motion.div className="flex items-center gap-2 justify-center lg:justify-start mb-3 sm:mb-4" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
