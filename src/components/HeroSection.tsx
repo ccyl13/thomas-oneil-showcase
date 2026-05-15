@@ -224,3 +224,5 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
+// build trigger
