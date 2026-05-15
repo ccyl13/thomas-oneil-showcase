@@ -1,31 +1,10 @@
-import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Shield, Terminal, Lock, Wifi, ChevronDown } from "lucide-react";
 import { useRef, useEffect, useState, lazy, Suspense } from "react";
 import profileImg from "@/assets/thomas-profile.png";
 import TextReveal from "./animations/TextReveal";
 
 const HeroCanvas = lazy(() => import("./3d/HeroCanvas"));
-
-// Parallax layer helper
-function ParallaxLayer({
-  children,
-  depth,
-  scrollY,
-  className = "",
-}: {
-  children: React.ReactNode;
-  depth: number;
-  scrollY: MotionValue<number>;
-  className?: string;
-}) {
-  const y = useTransform(scrollY, [0, 1], [0, depth]);
-  const smooth = useSpring(y, { stiffness: 60, damping: 20 });
-  return (
-    <motion.div className={`absolute inset-0 ${className}`} style={{ y: smooth }}>
-      {children}
-    </motion.div>
-  );
-}
 
 const HeroSection = () => {
   const ref = useRef<HTMLElement>(null);
@@ -37,26 +16,19 @@ const HeroSection = () => {
     offset: ["start start", "end start"],
   });
 
-  // Cinematic scroll transforms
   const rawScale = useTransform(scrollYProgress, [0, 0.6], [1, 1.18]);
   const scale = useSpring(rawScale, { stiffness: 50, damping: 18 });
-
   const rawOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
   const opacity = useSpring(rawOpacity, { stiffness: 80, damping: 20 });
-
-  const rawBlur = useTransform(scrollYProgress, [0.3, 0.75], [0, 12]);
-  const blur = useSpring(rawBlur, { stiffness: 60, damping: 20 });
-
-  // Scene transition vignette
   const vignetteOpacity = useTransform(scrollYProgress, [0.5, 1], [0, 1]);
+  const scrollCTAOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 180]);
+  const midY = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
-  // Mouse parallax for camera feel
   useEffect(() => {
     const handleMouse = (e: MouseEvent) => {
-      const cx = (e.clientX / window.innerWidth - 0.5) * 2;
-      const cy = (e.clientY / window.innerHeight - 0.5) * 2;
-      setMouseX(cx);
-      setMouseY(cy);
+      setMouseX((e.clientX / window.innerWidth - 0.5) * 2);
+      setMouseY((e.clientY / window.innerHeight - 0.5) * 2);
     };
     window.addEventListener("mousemove", handleMouse);
     return () => window.removeEventListener("mousemove", handleMouse);
@@ -74,67 +46,66 @@ const HeroSection = () => {
       ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* ── LAYER 0: Three.js deep background (slowest) ── */}
-      <ParallaxLayer depth={180} scrollY={scrollYProgress} className="z-0">
+      {/* Layer 0: Three.js deep background with parallax */}
+      <motion.div className="absolute inset-0 z-0" style={{ y: bgY }}>
         <Suspense fallback={null}>
           <HeroCanvas />
         </Suspense>
-      </ParallaxLayer>
+      </motion.div>
 
-      {/* ── LAYER 1: Radial glow — moves with mouse ── */}
+      {/* Layer 1: Mouse-reactive radial glow */}
       <motion.div
         className="absolute inset-0 pointer-events-none z-[1]"
-        animate={{
-          background: `radial-gradient(ellipse 70% 55% at ${50 + mouseX * 8}% ${50 + mouseY * 6}%, hsl(175 80% 50% / 0.10) 0%, transparent 70%)`,
+        style={{
+          background: `radial-gradient(ellipse 70% 55% at ${50 + mouseX * 8}% ${50 + mouseY * 6}%, hsl(175 80% 50% / 0.09) 0%, transparent 70%)`,
         }}
-        transition={{ type: "tween", duration: 0.6 }}
       />
 
-      {/* ── LAYER 2: Grid / scanlines (mid speed) ── */}
-      <ParallaxLayer depth={80} scrollY={scrollYProgress} className="z-[2] pointer-events-none">
-        <div className="absolute inset-0 scanline opacity-40" />
+      {/* Layer 2: Grid + scanlines mid-parallax */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none z-[2]"
+        style={{ y: midY }}
+      >
+        <div className="absolute inset-0 scanline opacity-35" />
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.025]"
           style={{
             backgroundImage:
-              "linear-gradient(hsl(175 80% 50% / 1) 1px, transparent 1px), linear-gradient(90deg, hsl(175 80% 50% / 1) 1px, transparent 1px)",
+              "linear-gradient(hsl(175 80% 50%) 1px, transparent 1px), linear-gradient(90deg, hsl(175 80% 50%) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
           }}
         />
-      </ParallaxLayer>
+      </motion.div>
 
-      {/* ── LAYER 3: Floating depth orbs ── */}
-      <ParallaxLayer depth={120} scrollY={scrollYProgress} className="z-[3] pointer-events-none">
-        <motion.div
-          className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full"
-          style={{
-            background: "radial-gradient(circle, hsl(175 80% 50% / 0.06) 0%, transparent 70%)",
-            filter: "blur(40px)",
-          }}
-          animate={{ x: mouseX * -20, y: mouseY * -15 }}
-          transition={{ type: "spring", stiffness: 40, damping: 15 }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 left-1/5 w-48 h-48 rounded-full"
-          style={{
-            background: "radial-gradient(circle, hsl(120 60% 50% / 0.04) 0%, transparent 70%)",
-            filter: "blur(30px)",
-          }}
-          animate={{ x: mouseX * 15, y: mouseY * 10 }}
-          transition={{ type: "spring", stiffness: 35, damping: 18 }}
-        />
-      </ParallaxLayer>
+      {/* Layer 3: Floating ambient orbs — mouse depth */}
+      <motion.div
+        className="absolute pointer-events-none z-[3] top-1/4 right-1/4 w-72 h-72 rounded-full"
+        style={{
+          background: "radial-gradient(circle, hsl(175 80% 50% / 0.07) 0%, transparent 70%)",
+          filter: "blur(48px)",
+          x: mouseX * -22,
+          y: mouseY * -16,
+        }}
+      />
+      <motion.div
+        className="absolute pointer-events-none z-[3] bottom-1/3 left-1/4 w-52 h-52 rounded-full"
+        style={{
+          background: "radial-gradient(circle, hsl(120 60% 50% / 0.04) 0%, transparent 70%)",
+          filter: "blur(32px)",
+          x: mouseX * 16,
+          y: mouseY * 12,
+        }}
+      />
 
-      {/* ── MAIN CONTENT: scales + fades + blurs on scroll ── */}
+      {/* MAIN CONTENT — fades + blurs on scroll */}
       <motion.div
         className="relative z-10 w-full max-w-6xl mx-auto px-4 pt-20 sm:pt-0 flex flex-col-reverse lg:flex-row items-center gap-8 sm:gap-12"
-        style={{ opacity, filter: blur.get() > 0 ? `blur(${blur.get()}px)` : "none" }}
+        style={{ opacity }}
       >
-        {/* TEXT block */}
+        {/* TEXT — subtle mouse shift */}
         <motion.div
           className="flex-1 text-center lg:text-left"
-          animate={{ x: mouseX * -6, y: mouseY * -4 }}
-          transition={{ type: "spring", stiffness: 30, damping: 12 }}
+          style={{ x: mouseX * -5, y: mouseY * -3 }}
         >
           <motion.div
             className="flex items-center gap-2 justify-center lg:justify-start mb-3 sm:mb-4"
@@ -143,9 +114,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Terminal className="w-4 h-4 text-primary" />
-            <span className="font-mono text-xs text-primary tracking-widest uppercase">
-              ~/portfolio
-            </span>
+            <span className="font-mono text-xs text-primary tracking-widest uppercase">~/portfolio</span>
           </motion.div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-3 sm:mb-4">
@@ -163,9 +132,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.8 }}
           >
             <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-            <p className="text-base sm:text-xl text-muted-foreground">
-              Ethical Hacker &amp; Pentester
-            </p>
+            <p className="text-base sm:text-xl text-muted-foreground">Ethical Hacker &amp; Pentester</p>
           </motion.div>
 
           <motion.p
@@ -174,15 +141,11 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.7, delay: 1 }}
           >
-            Pentester en{" "}
-            <span className="text-primary font-semibold">SecureIT</span> ·
-            Formador en IA y Ciberseguridad en{" "}
-            <span className="text-accent font-semibold">Racks Academy</span> ·
-            Ponente en{" "}
+            Pentester en <span className="text-primary font-semibold">SecureIT</span> · Formador en IA y Ciberseguridad en{" "}
+            <span className="text-accent font-semibold">Racks Academy</span> · Ponente en{" "}
             <span className="text-accent font-semibold">RootedCON 2026</span>
           </motion.p>
 
-          {/* Badges */}
           <motion.div
             className="flex flex-wrap gap-2 justify-center lg:justify-start mb-6 sm:mb-8"
             initial={{ opacity: 0 }}
@@ -196,7 +159,7 @@ const HeroSection = () => {
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 1.2 + i * 0.08 }}
-                whileHover={{ scale: 1.08, borderColor: "hsl(175 80% 50% / 0.5)" }}
+                whileHover={{ scale: 1.08 }}
               >
                 <Icon className="w-3 h-3" />
                 {label}
@@ -210,41 +173,31 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.4 }}
           >
-            <a
-              href="#about"
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm sm:text-base transition-all hover:glow-primary hover:scale-[1.03] active:scale-[0.98]"
-            >
+            <a href="#about" className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm sm:text-base transition-all hover:glow-primary hover:scale-[1.03] active:scale-[0.98]">
               Sobre mí
             </a>
-            <a
-              href="#certifications"
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border-glow bg-secondary text-secondary-foreground font-semibold text-sm sm:text-base transition-all hover:bg-secondary/80 hover:scale-[1.03] active:scale-[0.98]"
-            >
+            <a href="#certifications" className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border-glow bg-secondary text-secondary-foreground font-semibold text-sm sm:text-base transition-all hover:bg-secondary/80 hover:scale-[1.03] active:scale-[0.98]">
               Certificaciones
             </a>
           </motion.div>
         </motion.div>
 
-        {/* PHOTO block — deeper parallax layer */}
+        {/* PHOTO — zoom on scroll + mouse parallax depth */}
         <motion.div
           className="flex-shrink-0 relative"
+          style={{ x: mouseX * 10, y: mouseY * 6 }}
           initial={{ opacity: 0, scale: 0.85, filter: "blur(10px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 1, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-          animate={{ x: mouseX * 10, y: mouseY * 6 }}
-          transition={{ type: "spring", stiffness: 25, damping: 10 }}
         >
-          {/* Lighting glow behind photo */}
+          {/* Pulsing light halo behind photo */}
           <motion.div
             className="absolute -inset-8 rounded-full pointer-events-none"
             style={{
-              background: "radial-gradient(ellipse 100% 100% at 50% 50%, hsl(175 80% 50% / 0.18) 0%, transparent 70%)",
+              background: "radial-gradient(ellipse 100% 100% at 50% 50%, hsl(175 80% 50% / 0.16) 0%, transparent 70%)",
               filter: "blur(24px)",
             }}
-            animate={{
-              opacity: [0.6, 1, 0.6],
-              scale: [0.95, 1.05, 0.95],
-            }}
+            animate={{ opacity: [0.5, 1, 0.5], scale: [0.95, 1.05, 0.95] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
 
@@ -263,7 +216,7 @@ const HeroSection = () => {
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 via-transparent to-accent/20 blur-lg animate-pulse-glow" />
           </div>
 
-          {/* Profile photo with scroll scale */}
+          {/* Profile photo — zooms in slightly on scroll */}
           <motion.div style={{ scale }}>
             <img
               src={profileImg}
@@ -272,7 +225,7 @@ const HeroSection = () => {
             />
           </motion.div>
 
-          {/* Corner decorations */}
+          {/* Corner deco */}
           <motion.div
             className="absolute -top-4 -right-4 w-8 h-8 border border-accent/40 rotate-45"
             animate={{ rotate: [45, 90, 45], scale: [1, 1.15, 1] }}
@@ -286,22 +239,21 @@ const HeroSection = () => {
         </motion.div>
       </motion.div>
 
-      {/* ── SCENE TRANSITION vignette ── */}
-      <motion.div
-        className="absolute inset-0 z-20 pointer-events-none"
+      {/* Scene transition vignette */}
+fix: resolve framer-motion duplicate animate — cinematic parallax hero        className="absolute inset-0 z-20 pointer-events-none"
         style={{
           opacity: vignetteOpacity,
           background: "radial-gradient(ellipse 50% 40% at 50% 50%, transparent 0%, hsl(220 15% 4% / 0.95) 100%)",
         }}
       />
 
-      {/* ── SCROLL CTA ── */}
+      {/* Scroll CTA */}
       <motion.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 1 }}
-        style={{ opacity: useTransform(scrollYProgress, [0, 0.15], [1, 0]) }}
+        style={{ opacity: scrollCTAOpacity }}
       >
         <span className="text-[10px] font-mono text-muted-foreground tracking-[3px] uppercase">scroll</span>
         <motion.div
