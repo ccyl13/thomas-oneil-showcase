@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Github, ExternalLink, Shield, Lock, Users } from "lucide-react";
 import TextReveal from "./animations/TextReveal";
