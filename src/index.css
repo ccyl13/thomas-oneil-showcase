@@ -192,3 +192,51 @@
 .border-pulse {
   animation: border-glow-pulse 3s ease-in-out infinite;
 }
+
+/* ── GLOBAL BACKGROUND ORBS ── */
+.glow-orb-1 {
+  position: absolute;
+  width: 65vw;
+  height: 65vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(175 80% 50% / 0.07) 0%, transparent 70%);
+  filter: blur(60px);
+  top: -20vw;
+  left: -15vw;
+  animation: orb-drift-1 30s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.glow-orb-2 {
+  position: absolute;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(80 70% 55% / 0.045) 0%, transparent 70%);
+  filter: blur(60px);
+  bottom: 5%;
+  right: -12vw;
+  animation: orb-drift-2 38s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate(0, 0); }
+  33%  { transform: translate(8vw, 14vh); }
+  66%  { transform: translate(-5vw, 22vh); }
+}
+
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0); }
+  33%  { transform: translate(-10vw, -9vh); }
+  66%  { transform: translate(-3vw, 12vh); }
+}
+
+/* ── CINEMATIC SECTION DIVIDER ── */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(175 80% 50% / 0.2), transparent);
+  margin: 0 auto;
+  max-width: 900px;
+}

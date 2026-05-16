@@ -11,8 +11,9 @@ const projects = [
   {
     icon: Shield,
     name: "Pentestify",
-    description: "Plataforma de automatización de pentesting web. Permite lanzar auditorías de seguridad sobre aplicaciones web de forma guiada, generando informes detallados con vulnerabilidades encontradas, su severidad y recomendaciones de remediación.",
-    tags: ["Python", "Pentesting", "Automatización", "Web Security"],
+    description:
+      "Generador interactivo de informes de pentesting. Documenta vulnerabilidades, visualiza estadísticas de riesgo en tiempo real y exporta informes PDF estructurados. Backend FastAPI con persistencia SQLite y despliegue Docker en un solo comando.",
+    tags: ["Python", "FastAPI", "Docker", "Pentesting"],
     link: "https://github.com/ccyl13/Pentestify",
     color: "text-primary",
     glow: "hover:border-primary/40 hover:shadow-[0_0_20px_hsl(175_80%_50%/0.1)]",
@@ -20,17 +21,19 @@ const projects = [
   {
     icon: Lock,
     name: "WordPress Security Guard",
-    description: "Plugin de seguridad para WordPress que audita la instalación en busca de configuraciones inseguras, plugins vulnerables, permisos incorrectos y exposición de información sensible. Genera un informe de hardening con acciones correctivas.",
-    tags: ["PHP", "WordPress", "Security", "Plugin"],
+    description:
+      "Auditor de seguridad WordPress 100% pasivo y sin instalación. Analiza cabeceras HTTP, endpoints críticos y vectores de enumeración, generando puntuaciones CVSS 3.1 con pasos de remediación. Todo en cliente, sin envío de datos.",
+    tags: ["PHP", "WordPress", "CVSS 3.1", "OWASP"],
     link: "https://github.com/ccyl13/wordpress-security-guard",
     color: "text-accent",
-    glow: "hover:border-accent/40 hover:shadow-[0_0_20px_hsl(200_80%_50%/0.1)]",
+    glow: "hover:border-accent/40 hover:shadow-[0_0_20px_hsl(80_70%_55%/0.1)]",
   },
   {
     icon: Users,
     logo: incibeLogo,
     name: "Cibercooperante INCIBE",
-    description: "Colaboración activa como Cibercooperante del Instituto Nacional de Ciberseguridad (INCIBE), contribuyendo a la concienciación y divulgación de la ciberseguridad entre ciudadanos y empresas en España.",
+    description:
+      "Colaboración activa como Cibercooperante del Instituto Nacional de Ciberseguridad (INCIBE), contribuyendo a la concienciación y divulgación de la ciberseguridad entre ciudadanos y empresas en España.",
     tags: ["INCIBE", "Divulgación", "Ciberseguridad", "España"],
     color: "text-yellow-400",
     glow: "hover:border-yellow-400/40 hover:shadow-[0_0_20px_hsl(45_90%_50%/0.1)]",
@@ -48,7 +51,12 @@ const ToolsSection = () => (
       <SectionReveal className="mt-4 mb-8 sm:mb-10" delay={0.1}>
         <p className="text-muted-foreground text-sm sm:text-base max-w-2xl">
           Estos son solo algunos de los proyectos que he desarrollado. Puedes ver más en{" "}
-          <a href="https://github.com/ccyl13" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1 font-medium">
+          <a
+            href="https://github.com/ccyl13"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline inline-flex items-center gap-1 font-medium"
+          >
             mi GitHub <ExternalLink className="w-3 h-3" />
           </a>
         </p>
@@ -65,15 +73,24 @@ const ToolsSection = () => (
               whileHover={{ y: -4 }}
             >
               <div className="flex items-start justify-between gap-3">
-                <div className={`p-2.5 rounded-xl bg-white/5 flex-shrink-0 ${project.color}`}>
+                <div className={`p-3 rounded-xl bg-white/5 flex-shrink-0 ${project.color}`}>
                   {project.logo ? (
-                    <img src={project.logo} alt={project.name} className="w-6 h-6 object-contain" />
+                    <img
+                      src={project.logo}
+                      alt={project.name}
+                      className="w-10 h-10 object-contain"
+                    />
                   ) : (
                     <Icon className="w-6 h-6" />
                   )}
                 </div>
                 {project.link && (
-                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors flex-shrink-0">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors flex-shrink-0"
+                  >
                     <Github className="w-3.5 h-3.5" /> Ver repo
                   </a>
                 )}
@@ -84,7 +101,10 @@ const ToolsSection = () => (
               </div>
               <div className="flex flex-wrap gap-1.5 mt-auto">
                 {project.tags.map((tag) => (
-                  <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground border border-white/10">
+                  <span
+                    key={tag}
+                    className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground border border-white/10"
+                  >
                     {tag}
                   </span>
                 ))}

@@ -97,9 +97,9 @@ const HeroSection = () => {
             <p className="text-base sm:text-xl text-muted-foreground">Ethical Hacker &amp; Pentester</p>
           </motion.div>
           <motion.p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-8 leading-relaxed" initial={{ opacity: 0, y: 20, filter: "blur(4px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 0.7, delay: 1 }}>
-            Pentester en <span className="text-primary font-semibold">SecureIT</span> · Formador en IA y Ciberseguridad en{" "}
-            <span className="text-accent font-semibold">Racks Academy</span> · Ponente en{" "}
-            <span className="text-accent font-semibold">RootedCON 2026</span>
+            Pentester y Hacker Ético, apasionado por la investigación y el{" "}
+            <span className="text-primary font-semibold">OSINT</span>.{" "}
+            <span className="text-accent font-semibold">Divulgador</span> y ponente.
           </motion.p>
           <motion.div className="flex flex-wrap gap-2 justify-center lg:justify-start mb-6 sm:mb-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>
             {badges.map(({ icon: Icon, label }, i) => (

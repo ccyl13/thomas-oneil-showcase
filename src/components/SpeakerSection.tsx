@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Mic, MapPin, Calendar, Star } from "lucide-react";
 import { useRef } from "react";
 import rootedImg from "@/assets/rooted-con.jpg";
@@ -6,7 +6,6 @@ import cyberfight1 from "@/assets/cyberfight1.jpg";
 import cyberfight2 from "@/assets/cyberfight2.jpg";
 import ciberwall1 from "@/assets/ciberwall1.png";
 import ciberwall2 from "@/assets/ciberwall2.png";
-import SectionReveal from "./animations/SectionReveal";
 import TextReveal from "./animations/TextReveal";
 import LineReveal from "./animations/LineReveal";
 
@@ -29,123 +28,136 @@ function TalkCard({
   highlight?: boolean;
   delay?: number;
 }) {
-  const imgRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: imgRef, offset: ["start end", "end start"] });
-  const imgScale = useTransform(scrollYProgress, [0, 0.5], [1.12, 1]);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: cardRef, offset: ["start end", "end start"] });
+
+  const imgY = useTransform(scrollYProgress, [0, 1], [-40, 40]);
+  const rawScale = useTransform(scrollYProgress, [0, 0.18, 0.82, 1], [0.93, 1, 1, 0.95]);
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.14, 0.86, 1], [0, 1, 1, 0.6]);
+  const cardScale = useSpring(rawScale, { stiffness: 55, damping: 18 });
 
   return (
-    <SectionReveal delay={delay}>
-      <div className={`glass rounded-2xl overflow-hidden grid lg:grid-cols-2 gap-0 ${highlight ? "ring-1 ring-accent/30" : ""}`}>
-        {/* Image grid */}
-        <div ref={imgRef} className="relative overflow-hidden">
+    <motion.div
+      ref={cardRef}
+      style={{ scale: cardScale, opacity: rawOpacity }}
+      initial={{ y: 60, filter: "blur(8px)" }}
+      whileInView={{ y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.85, ease: [0.21, 0.47, 0.32, 0.98], delay }}
+      className={`rounded-2xl overflow-hidden glass border border-white/5 flex flex-col ${
+        highlight ? "ring-1 ring-accent/40 shadow-[0_0_50px_hsl(80_70%_55%/0.07)]" : ""
+      }`}
+    >
+      {/* ── Cinematic image area ── */}
+      <div className="relative h-56 sm:h-72 overflow-hidden flex-shrink-0">
+        {/* Parallax wrapper — taller than the clip box so there's room to shift */}
+        <motion.div
+          className="absolute left-0 right-0"
+          style={{ y: imgY, top: "-40px", bottom: "-40px" }}
+        >
           {images.length === 1 ? (
-            <motion.img
+            <img
               src={images[0]}
               alt={title}
-              className="w-full h-full object-cover aspect-[4/3] sm:aspect-square lg:aspect-auto"
-              style={{ scale: imgScale }}
+              className="w-full h-full object-cover"
             />
           ) : (
-            <div className="grid grid-cols-2 h-full min-h-[260px]">
+            <div className="flex h-full">
               {images.map((img, i) => (
-                <motion.img
-                  key={i}
-                  src={img}
-                  alt={`${title} ${i + 1}`}
-                  className="w-full h-full object-cover"
-                  style={{ scale: imgScale }}
-                />
+                <div key={i} className="flex-1 relative overflow-hidden">
+                  {i > 0 && (
+                    <div className="absolute inset-y-0 left-0 w-px bg-white/20 z-10" />
+                  )}
+                  <img
+                    src={img}
+                    alt={`${title} ${i + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </div>
               ))}
             </div>
           )}
-          {highlight && (
-            <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-accent/90 text-background text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest">
-              <Star className="w-3 h-3" />
-              Próximamente
-            </div>
-          )}
-        </div>
+        </motion.div>
 
-        {/* Content */}
-        <div className="p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
-          <motion.div className="flex items-center gap-2 mb-3 sm:mb-4" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}>
-            <Mic className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-            <span className="font-mono text-xs sm:text-sm text-accent uppercase tracking-widest">
-              {badge || "Speaker"}
-            </span>
-          </motion.div>
+        {/* Gradient from bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent pointer-events-none" />
 
-          <motion.h3 className="text-xl sm:text-3xl font-bold text-foreground mb-3 sm:mb-4" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}>
+        {/* Highlight badge */}
+        {badge && (
+          <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 bg-accent/90 backdrop-blur-sm text-background text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest">
+            {highlight && <Star className="w-3 h-3" />}
+            {badge}
+          </div>
+        )}
+
+        {/* Title overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 z-10">
+          <div className="flex items-center gap-2 mb-1.5">
+            <Mic className="w-3.5 h-3.5 text-accent" />
+            <span className="font-mono text-[10px] text-accent uppercase tracking-widest">Speaker</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg leading-tight">
             {title}
-          </motion.h3>
-
-          <motion.div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.5 }}>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
-              <span>{date}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-              <span>{location}</span>
-            </div>
-          </motion.div>
-
-          <motion.p className="text-sm sm:text-base text-muted-foreground leading-relaxed" initial={{ opacity: 0, y: 20, filter: "blur(4px)" }} whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.6 }}>
-            {description}
-          </motion.p>
+          </h3>
         </div>
       </div>
-    </SectionReveal>
+
+      {/* ── Info area ── */}
+      <div className="p-5 sm:p-6 flex flex-col gap-3 flex-1">
+        <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+            <span>{date}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+            <span>{location}</span>
+          </div>
+        </div>
+        <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+      </div>
+    </motion.div>
   );
 }
 
-const SpeakerSection = () => {
-  return (
-    <section className="py-16 sm:py-24 px-4">
-      <div className="container max-w-6xl mx-auto">
-        <TextReveal as="h2" className="text-2xl sm:text-4xl font-bold mb-2 text-gradient-accent inline-block">
-          Ponencias
-        </TextReveal>
-        <LineReveal color="bg-accent" />
+const SpeakerSection = () => (
+  <section id="speaker" className="py-16 sm:py-24 px-4">
+    <div className="container max-w-6xl mx-auto">
+      <TextReveal as="h2" className="text-2xl sm:text-4xl font-bold mb-2 text-gradient-accent inline-block">
+        Ponencias
+      </TextReveal>
+      <LineReveal color="bg-accent" />
 
-        <div className="mt-6 sm:mt-8 flex flex-col gap-8 sm:gap-12">
-
-          {/* C1b3rwall 2026 — upcoming, highlighted */}
-          <TalkCard
-            images={[ciberwall1, ciberwall2]}
-            title="C1b3rwall 2026"
-            date="2, 3 y 4 de Junio 2026"
-            location="Escuela Nacional de Policía, Ávila"
-            badge="Próxima Ponencia"
-            highlight
-            description="C1b3rwall es el congreso de ciberseguridad de la Policía Nacional, uno de los eventos de referencia en España. Expertos, investigadores y fuerzas de seguridad se reúnen para compartir conocimiento sobre amenazas reales, inteligencia y defensa digital. Ser ponente en C1b3rwall es un reconocimiento a la trayectoria y al impacto en la comunidad de seguridad."
-            delay={0.05}
-          />
-
-          {/* RootedCON 2026 */}
-          <TalkCard
-            images={[rootedImg]}
-            title="RootedCON Madrid 2026"
-            date="5–7 Marzo 2026"
-            location="Kinépolis, Madrid"
-            description="Seleccionado como ponente en RootedCON, el congreso de ciberseguridad más importante de España y uno de los más relevantes de Europa. Una oportunidad para compartir conocimiento e investigación con la comunidad de seguridad."
-            delay={0.1}
-          />
-
-          {/* Cyber Fight Club Melilla */}
-          <TalkCard
-            images={[cyberfight1, cyberfight2]}
-            title="Cyber Fight Club Melilla"
-            date="2025"
-            location="Melilla"
-            description="Ponencia en el Cyber Fight Club de Melilla, un encuentro de ciberseguridad con formato dinámico donde expertos del sector comparten casos reales, técnicas ofensivas y defensivas en un entorno directo y práctico."
-            delay={0.15}
-          />
-
-        </div>
+      <div className="mt-8 sm:mt-12 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
+        <TalkCard
+          images={[ciberwall1, ciberwall2]}
+          title="C1b3rwall 2026"
+          date="2, 3 y 4 de Junio 2026"
+          location="Escuela Nacional de Policía, Ávila"
+          badge="Próxima Ponencia"
+          highlight
+          description="C1b3rwall es el congreso de ciberseguridad de la Policía Nacional, uno de los eventos de referencia en España. Expertos, investigadores y fuerzas de seguridad comparten conocimiento sobre amenazas reales, inteligencia y defensa digital."
+          delay={0.05}
+        />
+        <TalkCard
+          images={[rootedImg]}
+          title="RootedCON Madrid 2026"
+          date="5–7 Marzo 2026"
+          location="Kinépolis, Madrid"
+          description="Seleccionado como ponente en RootedCON, el congreso de ciberseguridad más importante de España y uno de los más relevantes de Europa. Una oportunidad para compartir investigación con la comunidad de seguridad."
+          delay={0.1}
+        />
+        <TalkCard
+          images={[cyberfight1, cyberfight2]}
+          title="Cyber Fight Club Melilla"
+          date="8, 9 y 10 de Julio de 2026"
+          location="Melilla"
+          description="Ponencia en el Cyber Fight Club de Melilla, un encuentro de ciberseguridad con formato dinámico donde expertos del sector comparten casos reales, técnicas ofensivas y defensivas en un entorno directo y práctico."
+          delay={0.15}
+        />
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default SpeakerSection;

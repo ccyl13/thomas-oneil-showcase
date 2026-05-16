@@ -1,7 +1,7 @@
 import { Github, Linkedin, Instagram, Users, Shield } from "lucide-react";
 
 const socials = [
-  { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/thomasoneil%C3%A1lvarez/" },
+  { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/thomas-oneil-alvarez/" },
   { icon: Instagram, label: "Instagram", url: "https://www.instagram.com/thomas_oneil_alvarez_/" },
   { icon: Github, label: "GitHub", url: "https://github.com/ccyl13/" },
   { icon: Users, label: "Skool", url: "https://www.skool.com/the-hackers-labs-8479" },
