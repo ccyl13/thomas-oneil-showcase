@@ -2,15 +2,13 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Mic, MapPin, Calendar, Star } from "lucide-react";
 import { useRef } from "react";
 import rootedImg from "@/assets/rooted-con.jpg";
+import cyberfight1 from "@/assets/cyberfight1.jpg";
+import cyberfight2 from "@/assets/cyberfight2.jpg";
+import ciberwall1 from "@/assets/ciberwall1.png";
+import ciberwall2 from "@/assets/ciberwall2.png";
 import SectionReveal from "./animations/SectionReveal";
 import TextReveal from "./animations/TextReveal";
 import LineReveal from "./animations/LineReveal";
-
-const cyberfight1 = new URL("../cyberfight1.jpg", import.meta.url).href;
-const cyberfight2 = new URL("../cyberfight2.jpg", import.meta.url).href;
-const ciberwall1 = new URL("../../ciberwall1.png", import.meta.url).href;
-const ciberwall2 = new URL("../../ciberwall2.png", import.meta.url).href;
-const profileImg = new URL("../assets/thomas-profile.png", import.meta.url).href;
 
 function TalkCard({
   images,
