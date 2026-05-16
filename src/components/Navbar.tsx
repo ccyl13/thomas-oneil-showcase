@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Shield, Menu, X } from "lucide-react";
-import NavLink from "./NavLink";
 
 const navLinks = [
   { href: "#about", label: "Sobre mí" },
@@ -37,9 +36,13 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center gap-1">
           {navLinks.map((link) => (
-            <NavLink key={link.href} href={link.href}>
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-xs text-muted-foreground hover:text-primary px-3 py-1.5 rounded-md transition-colors font-medium"
+            >
               {link.label}
-            </NavLink>
+            </a>
           ))}
         </div>
 
