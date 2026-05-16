@@ -6,6 +6,7 @@ import LinkedInSection from "@/components/LinkedInSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import ToolsSection from "@/components/ToolsSection";
 import VulnerabilitiesSection from "@/components/VulnerabilitiesSection";
+import LawEnforcementSection from "@/components/LawEnforcementSection";
 import CertificationsSection from "@/components/CertificationsSection";
 import PodcastsSection from "@/components/PodcastsSection";
 import FooterSection from "@/components/FooterSection";
@@ -21,6 +22,7 @@ const Index = () => {
       <SpeakerSection />
       <ToolsSection />
       <VulnerabilitiesSection />
+      <LawEnforcementSection />
       <CertificationsSection />
       <PodcastsSection />
       <FooterSection />

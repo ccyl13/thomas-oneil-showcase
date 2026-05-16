@@ -8,6 +8,7 @@ const navLinks = [
   { href: "#projects", label: "Proyectos" },
   { href: "#speaker", label: "Ponencias" },
   { href: "#vulnerabilities", label: "Vulnerabilidades" },
+  { href: "#instituciones", label: "Instituciones" },
   { href: "#certifications", label: "Certificaciones" },
   { href: "#media", label: "Medios" },
 ];
