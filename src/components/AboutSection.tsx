@@ -34,11 +34,13 @@ const AboutSection = () => {
                 auditorías de seguridad para proteger infraestructuras críticas.
               </p>
               <p>
-                Como formador en{" "}
-                <strong className="text-accent">Racks Academy</strong>, imparto
-                formación especializada en Inteligencia Artificial y
-                Ciberseguridad, ayudando a profesionales que quieren dar el salto
-                a la ciberseguridad desde otras ramas, incluidos perfiles de IA.
+                Además, disfruto siendo formador en empresas como{" "}
+                <strong className="text-accent">BIG SEO</strong>,{" "}
+                <strong className="text-accent">Racks Academy</strong>,{" "}
+                <strong className="text-accent">KeepCoding</strong>,{" "}
+                <strong className="text-accent">Executive Labs</strong>, entre
+                otras. Ayudando tanto a profesionales en activo como a todos
+                aquellos que quieran empezar su carrera en ciberseguridad.
               </p>
               <p>
                 Durante los últimos{" "}
