@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" fill="none">
+  <!-- Main circle -->
+  <circle cx="120" cy="150" r="105" stroke="white" stroke-width="10"/>
+  <!-- VOLVO text centered in circle -->
+  <text
+    x="120" y="162"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Arial Black, Arial, sans-serif"
+    font-weight="900"
+    font-size="38"
+    letter-spacing="3"
+    fill="white"
+  >VOLVO</text>
+  <!-- Arrow shaft: from circle edge (approx 205,55) to tip (255,15) -->
+  <line x1="200" y1="58" x2="252" y2="15" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <!-- Arrowhead (L-shape pointing upper-right) -->
+  <polyline
+    points="222,10 256,10 256,44"
+    stroke="white" stroke-width="10"
+    stroke-linecap="round" stroke-linejoin="round"
+    fill="none"
+  />
+</svg>
