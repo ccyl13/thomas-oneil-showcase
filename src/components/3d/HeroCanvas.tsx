@@ -2,8 +2,7 @@ import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-// Floating particles
-function Particles({ count = 200 }: { count?: number }) {
+function Particles({ count = 150 }: { count?: number }) {
   const mesh = useRef<THREE.Points>(null);
 
   const [positions, colors] = useMemo(() => {
@@ -38,7 +37,6 @@ function Particles({ count = 200 }: { count?: number }) {
   );
 }
 
-// Floating wireframe icosahedron
 function FloatingShape() {
   const mesh = useRef<THREE.Mesh>(null);
 
@@ -58,47 +56,13 @@ function FloatingShape() {
   );
 }
 
-// Second decorative shape
-function FloatingShape2() {
-  const mesh = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (!mesh.current) return;
-    const t = state.clock.elapsedTime;
-    mesh.current.rotation.x = -t * 0.1;
-    mesh.current.rotation.z = t * 0.08;
-    mesh.current.position.y = Math.cos(t * 0.4) * 0.4;
-  });
-
-  return (
-    <mesh ref={mesh} position={[-4, -1, -5]}>
-      <octahedronGeometry args={[1.2, 0]} />
-      <meshBasicMaterial color="#00ccff" wireframe transparent opacity={0.08} />
-    </mesh>
-  );
-}
-
-// Grid plane
-function Grid() {
-  return (
-    <gridHelper
-      args={[40, 40, "#003322", "#001a11"]}
-      position={[0, -4, 0]}
-      rotation={[0, 0, 0]}
-    />
-  );
-}
-
-// Scene wrapper
 function Scene() {
   return (
     <>
-      <Particles count={250} />
+      <Particles count={150} />
       <FloatingShape />
-      <FloatingShape2 />
-      <Grid />
+      <gridHelper args={[40, 40, "#003322", "#001a11"]} position={[0, -4, 0]} />
       <ambientLight intensity={0.2} color="#00ffcc" />
-      <pointLight position={[5, 5, 5]} intensity={0.5} color="#00ffcc" />
     </>
   );
 }
@@ -108,7 +72,8 @@ export default function HeroCanvas() {
     <Canvas
       camera={{ position: [0, 0, 8], fov: 60 }}
       style={{ background: "transparent" }}
-      gl={{ antialias: true, alpha: true }}
+      gl={{ antialias: false, alpha: true, powerPreference: "low-power" }}
+      dpr={[1, 1.5]}
     >
       <Scene />
     </Canvas>
